@@ -1,0 +1,28 @@
+@startuml
+autonumber
+
+title [Sequence]: Процесс создания автоматического сценария работы устройства
+
+actor "User" as user
+participant client as "web/mobile client"
+box "Device Management Service"
+    participant DeviceManagementController as "Device Management Controller"
+    participant ServiceLayer as "Device Management Service"
+endbox
+participant DevicesService as "Devices Service"
+participant ScenarioService as "Scenario Service"
+queue "Kafka" as kafka #ff7f00
+
+user -> client: пользователь создал сценарий для устройства
+client -> DeviceManagementController: Создай сценарий для устроства id
+DeviceManagementController -> DevicesService: запрос данных об устроистве (id устройства)
+DevicesService --> DeviceManagementController: return Данные об устройстве (id устройства, id пользователя)
+DeviceManagementController -> ServiceLayer: сохранение сценария (id устройства, id пользователя, сценарий)
+ServiceLayer -> ScenarioService: сохранение сценария (id устройства, id пользователя, сценарий)
+ScenarioService --> ServiceLayer: return Ok
+ServiceLayer -> kafka: отправка команд устройствам
+ServiceLayer --> DeviceManagementController: return Ok
+DeviceManagementController --> client: return Ok
+client --> user: return Ok
+
+@enduml

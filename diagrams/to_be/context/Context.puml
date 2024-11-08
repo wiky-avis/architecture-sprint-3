@@ -1,0 +1,24 @@
+@startuml
+title Smart Home Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы Smart Home")
+Person(admin, "Administrator", "Администратор системы Smart Home")
+System(SmartHomeSystem, "Smart Home System", "Система управления умным домом")
+
+System_Ext(HeatingDevice, "Heating Device", "Устройство управления отоплением")
+System_Ext(VideoSurveillanceDevice, "Video Surveillance Device", "Устройство управления видеонаблюдением")
+System_Ext(LightingDevice, "Lighting Device", "Устройство управления освещением")
+System_Ext(GateDevice, "Gate Device", "Устройство управления воротами")
+
+Rel(user, SmartHomeSystem, "Управляет устройствами в своем доме")
+Rel(admin,SmartHomeSystem,"Администрирует систему Smart Home")
+Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой")
+Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением")
+Rel(SmartHomeSystem,LightingDevice,"Управляет освещением")
+Rel(SmartHomeSystem,GateDevice,"Управляет воротами")
+
+@enduml

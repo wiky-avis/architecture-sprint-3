@@ -1,0 +1,57 @@
+@startuml
+title Smart Home Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы Smart Home")
+Person(admin, "Administrator", "Администратор системы Smart Home")
+System(SmartHomeSystem, "Smart Home System", "Система управления умным домом")
+
+Container_Boundary(SmartHomeSystem, "Smart Home System") {
+  Container(WebApp, "Web Application", "React, JS", "Предоставляет пользователям интерфейс для управления умным домов через веб-браузер")
+  Container(MobileApp, "Mobile Application", "Kotlin, Swift", "Предоставляет пользователям интерфейс для управления умным домов через мобильное приложение")
+  Container(ApiGateway, "API Gateway", "Управляет маршрутизацей запросов к микросервисам, реализует политику безопасности")
+  Container(TelemetryManagementService, "Telemetry Management Service", "Java/Python/Go", "Сервис управления телеметрией")
+  ContainerDb(TelemetryDatabase, "Telemetry DB", "PostgreSQL", "Телеметрия с устройств")
+  Container(DeviceManagementService, "Device Management Service", "Java/Python/Go", "Сервис управления устройствами")
+  Container(DevicesService, "Devices Service", "Java/Python/Go", "Сервис данных об устройствах")
+  ContainerDb(DevicesDatabase, "Devices DB", "PostgreSQL", "Данные об устройствах")
+  Container(UsersService, "Users Service", "Java/Python/Go", "Сервис управления устройствами")
+  ContainerDb(UsersDatabase, "Users DB", "PostgreSQL", "Данные о пользователях, ролях и разрешениях")
+  Container(ScenarioService, "Scenario Service", "Java/Python/Go", "Сервис сценариев работы устройств")
+  ContainerDb(ScenarioDatabase, "Scenario DB", "PostgreSQL", "Хранит сценарии работы устройств")
+  SystemQueue(kafka, "Kafka", "Система обмена сообщениями")
+}
+
+System_Boundary(devices, "Устройства") {
+    System_Ext(HeatingDevice, "Heating Device", "Устройство управления отоплением")
+    System_Ext(VideoSurveillanceDevice, "Video Surveillance Device", "Устройство управления видеонаблюдением")
+    System_Ext(LightingDevice, "Lighting Device", "Устройство управления освещением")
+    System_Ext(GateDevice, "Gate Device", "Устройство управления воротами")
+}
+
+Rel(user, WebApp, "Управляет устройствами в своем доме")
+Rel(user, MobileApp, "Управляет устройствами в своем доме")
+Rel(admin, WebApp,"Администрирует систему Smart Home")
+Rel(WebApp, ApiGateway,"Управляет устройствами в своем доме")
+Rel(MobileApp, ApiGateway,"Управляет устройствами в своем доме")
+Rel(TelemetryManagementService, TelemetryDatabase,"Чтение/запись телеметрии устройств")
+Rel(DevicesService, DevicesDatabase,"Чтение/запись данных об устройстве")
+Rel(UsersService, UsersDatabase,"Чтение/запись данных о пользователе, ролях и разрешениях пользователя")
+Rel(ScenarioService, ScenarioDatabase,"Чтение/запись данных сценария работы устройства")
+
+Rel(ApiGateway,DeviceManagementService, "Просмотр характеристик устройста; Просмотр/создание сценария работы устройства")
+Rel(ApiGateway,UsersService, "Создание пользователя, назначение ролей и разрешений;Проверка прав пользователя")
+Rel(HeatingDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд")
+Rel(VideoSurveillanceDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд")
+Rel(LightingDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд")
+Rel(GateDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд")
+Rel(DeviceManagementService,kafka, "Отправка событий выполнения команд")
+Rel(TelemetryManagementService,kafka, "Подписка на события изменения сотояния устройства")
+Rel(DeviceManagementService,ScenarioService, "Получение/создание сценария работы устройства")
+Rel(DeviceManagementService,TelemetryManagementService, "Аналитика телеметрии устройств")
+Rel(DeviceManagementService, DevicesService, "Получение данных устройства")
+
+@enduml

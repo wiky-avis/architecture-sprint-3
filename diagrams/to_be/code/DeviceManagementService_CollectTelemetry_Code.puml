@@ -1,0 +1,21 @@
+@startuml
+autonumber
+
+title [Sequence]: Процесс сбора телеметрии устройства
+
+queue "Kafka" as kafka #ff7f00
+box "Telemetry Management Service"
+    participant TelemetryConsumer as "Telemetry Consumer"
+    participant ServiceLayer as "Device Management Service"
+    participant RepositoryLayer as "Telemetry Repository Layer"
+    database DB as "telemetry_db" #0080ff
+endbox
+
+kafka -> TelemetryConsumer: событие о изменении состояния устройства
+TelemetryConsumer -> ServiceLayer: сохранение состояния устройства
+ServiceLayer -> RepositoryLayer: сохранение состояния устройства
+RepositoryLayer -> DB: сохранение состояния устройства
+DB --> RepositoryLayer: return Ok
+RepositoryLayer --> ServiceLayer: return Ok
+
+@enduml
