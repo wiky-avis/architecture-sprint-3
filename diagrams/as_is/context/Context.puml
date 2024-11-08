@@ -1,0 +1,16 @@
+@startuml
+title Диаграмма контекста Smart Home
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы Smart Home")
+System(SmartHomeSystem, "Smart Home System", "Система управления отоплением")
+
+System_Ext(TemperatureSensor, "Датчик температуры", "Датчик установленный в доме")
+
+Rel(user, SmartHomeSystem, "Включение/выключение отопления; Запрос температуры")
+Rel(SmartHomeSystem,TemperatureSensor,"Запрос данных о температуре; Управление отоплением")
+
+@enduml
