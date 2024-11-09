@@ -14,13 +14,15 @@ participant ScenarioService as "Scenario Service"
 queue "Kafka" as kafka #ff7f00
 
 user -> client: пользователь создал сценарий для устройства
-client -> DeviceManagementController: Создай сценарий для устроства id
-DeviceManagementController -> DevicesService: запрос данных об устроистве (id устройства)
-DevicesService --> DeviceManagementController: return Данные об устройстве (id устройства, id пользователя)
-DeviceManagementController -> ServiceLayer: сохранение сценария (id устройства, id пользователя, сценарий)
-ServiceLayer -> ScenarioService: сохранение сценария (id устройства, id пользователя, сценарий)
-ScenarioService --> ServiceLayer: return Ok
-ServiceLayer -> kafka: отправка команд устройствам
+client -> DeviceManagementController: Создай сценарий для устроства
+DeviceManagementController -> DevicesService: запрос данных об устроистве
+DevicesService --> DeviceManagementController: return Данные об устройстве
+DeviceManagementController -> ServiceLayer: сохранение сценария
+ServiceLayer -> ScenarioService: сохранение сценария
+ScenarioService --> ServiceLayer: return scenario_id
+ServiceLayer -> DevicesService: обновление данных модуля(сохранение сценария)
+DevicesService --> ServiceLayer: return Ok
+ServiceLayer -> kafka: отправка команд устройству
 ServiceLayer --> DeviceManagementController: return Ok
 DeviceManagementController --> client: return Ok
 client --> user: return Ok

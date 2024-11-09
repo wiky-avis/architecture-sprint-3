@@ -90,7 +90,7 @@
 Учитывая планы компании на расширение функциональности и масштабировании, с существующим монолитным решением будет сложно:
 - гибко масштабировать;
 - добавлять новую функциональность и поддерживать;
-- развертываение потребует полной остановки сервиса, что повлечет простои в работе;
+- развертывание потребует полной остановки сервиса, что повлечет простои в работе;
 - ограниченный технологический стек.
 
 ## Визуализация контекста системы (As is)
@@ -167,11 +167,16 @@
 
 [Users Service Component Diagram](diagrams/to_be/component/UsersService_Component.puml)
 
-[Sequence Save Scenario Diagram](diagrams/to_be/code/DeviceManagementService_SaveScenario_Code.puml)
+[Save Scenario Sequence Diagram](diagrams/to_be/code/DeviceManagementService_SaveScenario_Code.puml)
 
-[Sequence Get Telemetry Diagram](diagrams/to_be/code/DeviceManagementService_GetTelemetry_Code.puml)
+[Get Telemetry Sequence Diagram](diagrams/to_be/code/DeviceManagementService_GetTelemetry_Code.puml)
 
-[Sequence Collect Telemetry Diagram](diagrams/to_be/code/DeviceManagementService_CollectTelemetry_Code.puml)
+[Collect Telemetry Sequence Diagram](diagrams/to_be/code/DeviceManagementService_CollectTelemetry_Code.puml)
+
+
+# Задание 3. Разработка ER-диаграммы
+
+[ER Diagram](diagrams/to_be/SmartHome_ER.puml)
 
 # Базовая настройка
 

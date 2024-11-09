@@ -5,20 +5,20 @@ title [Sequence]: Процесс просмотра телеметрии уст�
 
 actor "User" as user
 participant client as "web/mobile client"
-box "Telemetry Management Service"
-    participant TelemetryController as "Telemetry Controller"
+box "Device Management Service"
+    participant DeviceManagementController as "Device Controller"
     participant ServiceLayer as "Device Management Service"
-    participant RepositoryLayer as "Telemetry Repository Layer"
-    database DB as "telemetry_db" #0080ff
 endbox
 
+participant TelemetryService as "Telemetry Management Service"
+
 user -> client: Просмотр телеметрии устройств
-client -> TelemetryController: запрос данных телеметрии устройства\n по id устройства и id пользователя
-TelemetryController -> RepositoryLayer: запрос данных телеметрии устройства\n по id устройства и id пользователя
-RepositoryLayer -> DB: запрос данных телеметрии устройства\n по id устройства и id пользователя
-DB --> RepositoryLayer: return данные телеметрии устройства
-RepositoryLayer --> TelemetryController: return данные телеметрии устройства
-TelemetryController --> client: return данные телеметрии устройства
+client -> DeviceManagementController: запрос данных телеметрии устройства
+DeviceManagementController -> ServiceLayer: запрос данных телеметрии устройства
+ServiceLayer -> TelemetryService: запрос данных телеметрии устройства
+TelemetryService --> ServiceLayer: return данные телеметрии устройства
+ServiceLayer --> DeviceManagementController: return данные телеметрии устройства
+DeviceManagementController --> client: return данные телеметрии устройства
 client --> user: return данные телеметрии устройства
 
 @enduml
