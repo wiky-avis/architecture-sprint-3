@@ -94,7 +94,7 @@
 - ограниченный технологический стек.
 
 ## Визуализация контекста системы (As is)
-[Context diagram](diagrams/as_is/context/Context.puml)
+[Context diagram](docs/diagrams/as_is/context/Context.puml)
 
 # Задание 2. Проектирование микросервисной архитектуры
 ## Декомпозиция приложения на микросервисы
@@ -129,7 +129,7 @@
     - Поддомен: просмотр данных о пользоватлеях
         - Контекст: просмотр данных о пользователях, ролях и разрешениях
 
-[Context diagram](diagrams/to_be/context/Context.puml)
+[Context diagram](docs/diagrams/to_be/context/Context.puml)
 
 Исходя из контекста выше, удалось выделить следующие микросервисы:
 - **Telemetry Management Service** - Сервис управления телеметрией. Сбор, анализ и хранение телеметрии с устройств;
@@ -155,28 +155,32 @@
 
 
 ## Визуализация архитектуры
-[Container Diagram](diagrams/to_be/container/Container.puml)
+[Container Diagram](docs/diagrams/to_be/container/Container.puml)
 
-[Telemetry Management Service Component Diagram](diagrams/to_be/component/TelemetryManagementService_Component.puml)
+[Telemetry Management Service Component Diagram](docs/diagrams/to_be/component/TelemetryManagementService_Component.puml)
 
-[Device Management Service Component Diagram](diagrams/to_be/component/DeviceManagementService_Component.puml)
+[Device Management Service Component Diagram](docs/diagrams/to_be/component/DeviceManagementService_Component.puml)
 
-[Devices Service Component Diagram](diagrams/to_be/component/DevicesService_Component.puml)
+[Devices Service Component Diagram](docs/diagrams/to_be/component/DevicesService_Component.puml)
 
-[Scenario Service Component Diagram](diagrams/to_be/component/ScenarioService_Component.puml)
+[Scenario Service Component Diagram](docs/diagrams/to_be/component/ScenarioService_Component.puml)
 
-[Users Service Component Diagram](diagrams/to_be/component/UsersService_Component.puml)
+[Users Service Component Diagram](docs/diagrams/to_be/component/UsersService_Component.puml)
 
-[Save Scenario Sequence Diagram](diagrams/to_be/code/DeviceManagementService_SaveScenario_Code.puml)
+[Save Scenario Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_SaveScenario_Code.puml)
 
-[Get Telemetry Sequence Diagram](diagrams/to_be/code/DeviceManagementService_GetTelemetry_Code.puml)
+[Get Telemetry Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_GetTelemetry_Code.puml)
 
-[Collect Telemetry Sequence Diagram](diagrams/to_be/code/DeviceManagementService_CollectTelemetry_Code.puml)
+[Collect Telemetry Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_CollectTelemetry_Code.puml)
 
 
 # Задание 3. Разработка ER-диаграммы
 
-[ER Diagram](diagrams/to_be/SmartHome_ER.puml)
+[ER Diagram](docs/diagrams/to_be/SmartHome_ER.puml)
+
+# Задание 4. Создание и документирование API
+
+
 
 # Базовая настройка
 
