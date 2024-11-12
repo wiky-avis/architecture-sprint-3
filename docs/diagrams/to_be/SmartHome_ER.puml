@@ -2,7 +2,10 @@
 entity users {
   + id: UUID (PK)
   --
-  name: String
+  user_name: String
+  first_name: String
+  last_name: String
+  phone: String
   email: String
   password: String
   created_dt: DateTime
