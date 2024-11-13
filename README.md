@@ -179,7 +179,15 @@
 [ER Diagram](docs/diagrams/to_be/SmartHome_ER.puml)
 
 # Задание 4. Создание и документирование API
+[Users Service API](docs/api/UsersServiceApi.yml)
 
+[Scenario Service API](docs/api/ScenarioServiceApi.yml)
+
+[Devices Service API](docs/api/DevicesServiceApi.yml)
+
+[Telemetry Service API](docs/api/TelemetryServiceApi.yml)
+
+[Devices Management Service API](docs/api/DeviceManagementServiceApi.yml)
 
 
 # Базовая настройка
