@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Scenario Service API - OpenAPI 3.0
+  description: API сервиса сценариев работы устройств.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: scenarios
+    description: Сценарии работы устройств
+paths:
+  /scenarios:
+    post:
+      tags:
+        - scenarios
+      summary: Создание сценария
+      description: Создание сценария.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScenarioInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /scenarios/{id}:
+    get:
+      tags:
+        - scenarios
+      summary: Получить данные сценария по id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+    put:
+      tags:
+        - scenarios
+      summary: Обновить сценарий
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScenarioUpdateInput'
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Bad Request
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+    delete:
+      tags:
+        - scenarios
+      summary: Удалить сценарий
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '203':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+  /users/{id}/scenarios:
+    get:
+      tags:
+        - scenarios
+      summary: Получить сценарии пользователя
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenariosList'
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+components:
+  schemas:
+    ScenarioInput:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0756
+        module_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0758
+        name:
+          type: string
+          example: Scenario name
+        config:
+          type: string
+          example: 'script'
+      xml:
+        name: scenarios
+    ScenarioUpdateInput:
+      type: object
+      properties:
+        config:
+          type: string
+          example: 'script'
+      xml:
+        name: scenarios
+    Scenario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0756
+        module_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0758
+        name:
+          type: string
+          example: Scenario name
+        config:
+          type: string
+          example: 'script'
+      xml:
+        name: scenarios
+    ScenariosList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Scenario'
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+
