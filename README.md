@@ -189,6 +189,8 @@
 
 [Devices Management Service API](docs/api/DeviceManagementServiceApi.yml)
 
+[Async API](docs/api/asyncapi.yaml)
+
 
 # Базовая настройка
 
