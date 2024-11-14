@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080/api/v1
 tags:
   - name: devices
-    description: Сценарии работы устройств
+    description: Устройства
   - name: modules
     description: Модули устройств
   - name: houses
@@ -83,7 +83,7 @@ paths:
     get:
       tags:
         - houses
-      summary: Получить все устройства по id дома
+      summary: Получить все модули по id дома
       description: ''
       parameters:
         - name: id

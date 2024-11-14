@@ -1,0 +1,688 @@
+openapi: 3.0.3
+info:
+  title: Device Management Service API - OpenAPI 3.0
+  description: API сервиса управления устройствами.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: devices
+    description: Сценарии работы устройств
+  - name: modules
+    description: Модули устройств
+  - name: houses
+    description: Дома где установлены устройства
+  - name: scenarios
+    description: Сценарии работы устройств
+  - name: telemetry
+    description: Телеметрия устройств
+paths:
+  /houses:
+    post:
+      tags:
+        - houses
+      summary: Создание адреса дома
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /houses/{id}:
+    get:
+      tags:
+        - houses
+      summary: Получить данные дома по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'
+        '404':
+          description: Дом не найден
+        '500':
+          description: Ошибка сервера
+  /houses/{id}/devices:
+    get:
+      tags:
+        - houses
+      summary: Получить все устройства по id дома
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicesList'
+        '500':
+          description: Ошибка сервера
+  /houses/{id}/modules:
+    get:
+      tags:
+        - houses
+      summary: Получить все устройства по id дома
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModulesList'
+        '500':
+          description: Ошибка сервера
+  /devices:
+    post:
+      tags:
+        - devices
+      summary: Создание устройства
+      description: Создание устройства.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /devices/{id}:
+    get:
+      tags:
+        - devices
+      summary: Получить данные устройства по id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '404':
+          description: Устройство не найдено
+        '500':
+          description: Ошибка сервера
+  /users/{id}/devices:
+    get:
+      tags:
+        - devices
+      summary: Получить все устройства пользователя по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicesList'
+        '500':
+          description: Ошибка сервера
+  /modules:
+    post:
+      tags:
+        - modules
+      summary: Создание модуля
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /modules/{id}:
+    get:
+      tags:
+        - modules
+      summary: Получить данные модуля по id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+        '404':
+          description: Модуль не найден
+        '500':
+          description: Ошибка сервера
+    put:
+      tags:
+        - modules
+      summary: Обновить данные модуля
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleUpdateInput'
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+        '400':
+          description: Bad Request
+        '404':
+          description: Модуль не найден
+        '500':
+          description: Ошибка сервера
+  /users/{id}/modules:
+    get:
+      tags:
+        - modules
+      summary: Получить все модули пользователя по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModulesList'
+        '500':
+          description: Ошибка сервера
+  /scenarios:
+    post:
+      tags:
+        - scenarios
+      summary: Создание сценария
+      description: Создание сценария.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScenarioInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /scenarios/{id}:
+    get:
+      tags:
+        - scenarios
+      summary: Получить данные сценария по id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+    put:
+      tags:
+        - scenarios
+      summary: Обновить сценарий
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScenarioUpdateInput'
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Bad Request
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+    delete:
+      tags:
+        - scenarios
+      summary: Удалить сценарий
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '203':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+  /users/{id}/scenarios:
+    get:
+      tags:
+        - scenarios
+      summary: Получить сценарии пользователя
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenariosList'
+        '404':
+          description: Сценарий не найден
+        '500':
+          description: Ошибка сервера
+  /devices/{id}/telemtry:
+    get:
+      tags:
+        - telemetry
+      summary: Получить данные устройства по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Telemetry'
+        '500':
+          description: Ошибка сервера
+  /houses/{id}/telemtry:
+    get:
+      tags:
+        - telemetry
+      summary: Получить данные всех установленных устройств в доме
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryList'
+        '500':
+          description: Ошибка сервера
+
+components:
+  schemas:
+    HouseInput:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        address:
+          type: string
+          example: Address
+    House:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        address:
+          type: string
+          example: Address
+    DeviceInput:
+      type: object
+      properties:
+        device_type_id:
+          type: integer
+          format: int64
+          example: 10
+        house_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        name:
+          type: string
+          example: Device name
+        serial_number:
+          type: string
+          example: A90X-U234PQR500
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        device_type:
+          $ref: '#/components/schemas/DeviceTypes'
+        house:
+          $ref: '#/components/schemas/House'
+        name:
+          type: string
+          example: Device name
+        serial_number:
+          type: string
+          example: A90X-U234PQR500
+        module:
+          $ref: '#/components/schemas/Module'
+        scenario:
+          $ref: '#/components/schemas/Scenario'
+        telemetry:
+          $ref: '#/components/schemas/Telemetry'
+    DeviceTypes:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Type name
+    DevicesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    ModuleTypes:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: Type name
+    ModuleInput:
+      type: object
+      properties:
+        module_type_id:
+          type: integer
+          format: int64
+          example: 10
+        house_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0751
+        scenario_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0752
+        name:
+          type: string
+          example: Module name
+        serial_number:
+          type: string
+          example: A90X-U234PQR500
+    ModuleUpdateInput:
+      type: object
+      properties:
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0751
+        scenario_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0752
+        name:
+          type: string
+          example: Module name
+    Module:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        name:
+          type: string
+          example: Module name
+        serial_number:
+          type: string
+          example: A90X-U234PQR500
+        module_type:
+          $ref: '#/components/schemas/ModuleTypes'
+        house:
+          $ref: '#/components/schemas/House'
+        device:
+          $ref: '#/components/schemas/Device'
+        scenario:
+          $ref: '#/components/schemas/Scenario'
+    ModulesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+    ScenarioInput:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0756
+        module_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0758
+        name:
+          type: string
+          example: Scenario name
+        config:
+          type: string
+          example: 'script'
+    ScenarioUpdateInput:
+      type: object
+      properties:
+        config:
+          type: string
+          example: 'script'
+    Scenario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        user_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0756
+        module_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0758
+        name:
+          type: string
+          example: Scenario name
+        config:
+          type: string
+          example: 'script'
+    ScenariosList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Scenario'
+    Telemetry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        house_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        status:
+          type: string
+          example: enabled
+        data:
+          type: string
+          example: Example data
+    TelemetryList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Telemetry'
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
