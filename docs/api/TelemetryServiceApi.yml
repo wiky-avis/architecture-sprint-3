@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Telemetry Management Service API - OpenAPI 3.0
+  description: API сервиса телементрии.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: devices
+    description: Телеметрия устройств
+paths:
+  /devices/{id}/telemtry:
+    get:
+      tags:
+        - devices
+      summary: Получить данные устройства по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Telemetry'
+        '500':
+          description: Ошибка сервера
+  /houses/{id}/telemtry:
+    get:
+      tags:
+        - devices
+      summary: Получить данные всех установленных устройств в доме
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelemetryList'
+        '500':
+          description: Ошибка сервера
+
+components:
+  schemas:
+    Telemetry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        house_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        device_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        status:
+          type: string
+          example: enabled
+        data:
+          type: string
+          example: Example data
+    TelemetryList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Telemetry'
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'

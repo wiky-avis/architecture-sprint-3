@@ -77,8 +77,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DevicesList'
-        '404':
-          description: Девайсы или дом не найдены
         '500':
           description: Ошибка сервера
   /houses/{id}/modules:
@@ -100,8 +98,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModulesList'
-        '404':
-          description: Модули или дом не найдены
         '500':
           description: Ошибка сервера
   /devices:
@@ -191,8 +187,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DevicesList'
-        '404':
-          description: Девайсы не найдены
         '500':
           description: Ошибка сервера
   /modules:
@@ -311,8 +305,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModulesList'
-        '404':
-          description: Модули не найдены
         '500':
           description: Ошибка сервера
 
