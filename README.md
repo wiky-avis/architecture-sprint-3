@@ -133,8 +133,7 @@
 
 Исходя из контекста выше, удалось выделить следующие микросервисы:
 - **Telemetry Management Service** - Сервис управления телеметрией. Сбор, анализ и хранение телеметрии с устройств;
-- **Device Management Service** - Сервис управления устройствами. Просмотр данных устройств, создание сценариев, отправляет команды на устройства;
-- **Devices Service** - Сервис данных устройств. Хранит данные об устройствах;
+- **Device Management Service** - Сервис управления устройствами. Хранит данные об устройствах, отправляет команды на устройства;
 - **Users Service** - Сервис управления данными о пользователях. Хранит данные о пользователях, ролях и разрешениях;
 - **Scenario Service** - Сервис сценариев работы устройств. Хранит сценарии работы устройств.
 
@@ -143,12 +142,11 @@
 - **User Service** направляет запросы к **User DB** читает/сохраняет данные в базу данных.
 
 - **API Gateway** направляет запросы к **Device Management Service** на просмотр данных об устройствах или просмотр/создание сценария работы.
-- **Device Management Service** направляет запросы к **Devices Service** на получение данных об устройстве.
-- **Devices Service** направляет запросы к **DevicesDatabase** на получение данных об устройстве.
-- **Device Management Service** направляет запросы к **Telemetry Management Service** на получение телеметрии устроиств.
+- **Device Management Service** направляет запросы к **DevicesDatabase** на получение данных об устройстве.
+- **API Gateway** направляет запросы к **Telemetry Management Service** на получение телеметрии устроиств.
 - **Telemetry Management Service** направляет запросы к **TelemetryDatabase** на получение телеметрии устроиств.
-- **Device Management Service** направляет запросы к **Scenario Service** на просмотр/создание сценаррия работы устроиства.
-- **Scenario Service** направляет запросы к **ScenarioDatabase** на получение/создание сценаррия работы устроиства.
+- **API Gateway** направляет запросы к **Scenario Service** на просмотр/создание сценария работы устроиства.
+- **Scenario Service** направляет запросы к **ScenarioDatabase** на получение/создание сценария работы устроиства.
 
 - **Telemetry Management Service** подписан на события **Kafka** на получение событий по изменению состояний устроиств.
 - **Device Management Service** отправляет события **Kafka** на передачу команды на устройство.
@@ -161,17 +159,15 @@
 
 [Device Management Service Component Diagram](docs/diagrams/to_be/component/DeviceManagementService_Component.puml)
 
-[Devices Service Component Diagram](docs/diagrams/to_be/component/DevicesService_Component.puml)
-
 [Scenario Service Component Diagram](docs/diagrams/to_be/component/ScenarioService_Component.puml)
 
 [Users Service Component Diagram](docs/diagrams/to_be/component/UsersService_Component.puml)
 
-[Save Scenario Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_SaveScenario_Code.puml)
+[Save Scenario Sequence Diagram](docs/diagrams/to_be/code/SaveScenario_Code.puml)
 
-[Get Telemetry Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_GetTelemetry_Code.puml)
+[Get Telemetry Sequence Diagram](docs/diagrams/to_be/code/GetTelemetry_Code.puml)
 
-[Collect Telemetry Sequence Diagram](docs/diagrams/to_be/code/DeviceManagementService_CollectTelemetry_Code.puml)
+[Collect Telemetry Sequence Diagram](docs/diagrams/to_be/code/CollectTelemetry_Code.puml)
 
 
 # Задание 3. Разработка ER-диаграммы

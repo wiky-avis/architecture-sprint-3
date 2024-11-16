@@ -1,0 +1,56 @@
+@startuml
+autonumber
+
+title [Sequence]: Процесс создания и активации автоматического сценария работы устройства
+
+actor "User" as user
+participant client as "web/mobile client"
+box "Scenario Service"
+    participant ScenarioServiceController as "Scenario Controller"
+    participant ScenarioServiceLayer as "Scenario Service Layer"
+    participant ScenarioRepositoryLayer as "Scenariot Repository Layer"
+    database ScenarioDB as "scenario_db" #0080ff
+endbox
+
+box "Device Management Service"
+    participant DeviceManagementController as "Device Management Controller"
+    participant ServiceLayer as "Device Management Service Layer"
+    participant RepositoryLayer as "Device Management Repository Layer"
+    database DB as "devices_db" #0080ff
+endbox
+
+queue "Kafka" as kafka #ff7f00
+
+user -> client: пользователь создал сценарий для устройства
+client -> ScenarioServiceController: Создай сценарий для устроства
+ScenarioServiceController -> ScenarioServiceLayer: Создай сценарий для устроства
+ScenarioServiceLayer -> DeviceManagementController: запрос данных об устроистве
+DeviceManagementController -> ServiceLayer: запрос данных об устроистве
+ServiceLayer -> RepositoryLayer: запрос данных об устроистве
+RepositoryLayer -> DB: запрос данных об устроистве
+DB --> RepositoryLayer: return Данные об устройстве
+RepositoryLayer --> ServiceLayer: return Данные об устройстве
+ServiceLayer --> DeviceManagementController: return Данные об устройстве
+DeviceManagementController --> ScenarioServiceLayer: return Данные об устройстве
+ScenarioServiceLayer -> ScenarioRepositoryLayer: сохранение сценария
+ScenarioRepositoryLayer -> ScenarioDB: сохранение сценария
+ScenarioDB --> ScenarioRepositoryLayer: return Ok
+ScenarioRepositoryLayer --> ScenarioServiceLayer: return Ok
+ScenarioServiceLayer --> ScenarioServiceController: return Ok
+ScenarioServiceController --> client: return Ok
+client --> user: return Ok
+
+user -> client: активировать сценарий
+client -> DeviceManagementController: активировать сценарий
+DeviceManagementController -> ServiceLayer: активировать сценарий
+ServiceLayer -> ScenarioServiceController: запрос данных сценария
+ScenarioServiceController -> ScenarioServiceLayer: запрос данных сценария
+ScenarioServiceLayer -> ScenarioRepositoryLayer: запрос данных сценария
+ScenarioRepositoryLayer -> ScenarioDB: запрос данных сценария
+ScenarioRepositoryLayer <-- ScenarioDB: return
+ScenarioServiceLayer <-- ScenarioRepositoryLayer: return
+ScenarioServiceController <-- ScenarioServiceLayer: return
+ServiceLayer <-- ScenarioServiceController: return Данные сценария
+ServiceLayer -> kafka: отправка команд устройствам
+
+@enduml

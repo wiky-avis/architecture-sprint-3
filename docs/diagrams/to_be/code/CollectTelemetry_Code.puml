@@ -6,7 +6,7 @@ title [Sequence]: Процесс сбора телеметрии устройс�
 queue "Kafka" as kafka #ff7f00
 box "Telemetry Management Service"
     participant TelemetryConsumer as "Telemetry Consumer"
-    participant ServiceLayer as "Device Management Service"
+    participant ServiceLayer as "Telemetry Service Layer"
     participant RepositoryLayer as "Telemetry Repository Layer"
     database DB as "telemetry_db" #0080ff
 endbox

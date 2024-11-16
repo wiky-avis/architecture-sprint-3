@@ -14,11 +14,17 @@ System_Ext(VideoSurveillanceDevice, "Video Surveillance Device", "Устройс
 System_Ext(LightingDevice, "Lighting Device", "Устройство управления освещением")
 System_Ext(GateDevice, "Gate Device", "Устройство управления воротами")
 
-Rel(user, SmartHomeSystem, "Управляет устройствами в своем доме")
-Rel(admin,SmartHomeSystem,"Администрирует систему Smart Home")
-Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой")
-Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением")
-Rel(SmartHomeSystem,LightingDevice,"Управляет освещением")
-Rel(SmartHomeSystem,GateDevice,"Управляет воротами")
+System_Ext(WebApp, "Web Application", "Предоставляет пользователям интерфейс для управления умным домов через веб-браузер")
+System_Ext(MobileApp, "Mobile Application", "Предоставляет пользователям интерфейс для управления умным домов через мобильное приложение")
+
+Rel(user, MobileApp, "Управляет устройствами в своем доме")
+Rel(user, WebApp, "Управляет устройствами в своем доме")
+Rel(admin,WebApp,"Администрирует систему Smart Home")
+Rel(MobileApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
+Rel(WebApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой", "Events")
+Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением", "Events")
+Rel(SmartHomeSystem,LightingDevice,"Управляет освещением", "Events")
+Rel(SmartHomeSystem,GateDevice,"Управляет воротами", "Events")
 
 @enduml

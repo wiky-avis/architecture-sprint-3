@@ -6,21 +6,19 @@ top to bottom direction
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
 Container_Boundary(DeviceManagementService, "Сервис управления устройствами") {
-  Container(App, "Application", "Java/Python/Go", "Просмотр данных устройств, создание сценариев, отправляет команды на устройства")
-  Container(DevicesService, "Devices Service", "Java/Python/Go", "Сервис данных устройств")
-  Container(ScenarioService, "Scenario Service", "Java/Python/Go", "Сервис сценариев работы устройств")
-  Container(TelemetryManagementService, "Telemetry Management Service", "Java/Python/Go", "Сервис сценариев работы устройств")
+  Container(App, "Application", "Java/Python/Go", "Хранит данные об устройствах, \nотправляет команды на устройства")
+  Container(Database, "Database", "PostgreSQL", "данные об устройствах")
   Container(Kafka, "Kafka", "Kafka", "Система обмена сообщениями")
 }
 
 Container(App, "Application", "Java, Spring") {
-  Component(DeviceManagementController, "Device Management Controller", "Обрабатывает запросы на получение данных телеметрии устройств")
-  Component(ServiceLayer, "Device Management Service Layer", "Слой бизнес-логики")
+  Component(DevicesController, "DevicesController", "Обрабатывает запросы на получение данных телеметрии устройств")
+  Component(ServiceLayer, "Devices Service Layer", "Слой бизнес-логики")
+  Component(RepositoryLayer, "Devices Repository Layer", "Слой взаимодействия с БД")
 }
 
-Rel(DeviceManagementController,ServiceLayer,"Вызывает бизнес-логику")
-Rel(ServiceLayer,DevicesService,"получение данных об устройстве")
-Rel(ServiceLayer,ScenarioService,"получение/создание сценаррия работы устроиства")
-Rel(ServiceLayer,TelemetryManagementService,"получение телеметрии устроиств")
+Rel(DevicesController,ServiceLayer,"Вызывает бизнес-логику")
+Rel(ServiceLayer,RepositoryLayer,"чтение/запись данных устройств")
+Rel(RepositoryLayer,Database,"чтение/запись данных устройств")
 Rel(ServiceLayer,Kafka,"отправка команд устройствам")
 @enduml

@@ -33,7 +33,7 @@ entity user_roles {
 entity permissions {
   + id: INTEGER (PK)
   --
-  name: String
+  * name: String
   description: String
 }
 
@@ -50,7 +50,7 @@ entity houses {
   + id: UUID (PK)
   --
   # user_id: UUID (FK)
-  address: String
+  * address: String
   created_dt: DateTime
   updated_dt: DateTime
 }
@@ -62,8 +62,8 @@ entity modules {
   # house_id: UUID (FK)
   # device_id: UUID (FK)
   # scenario_id: UUID (FK)
-  name: String
-  serial_number: String
+  * name: String
+  * serial_number: String
   created_dt: DateTime
   updated_dt: DateTime
 }
@@ -71,7 +71,7 @@ entity modules {
 entity module_types {
   + id: INTEGER (PK)
   --
-  name: String
+  * name: String
   description: String
 }
 
@@ -80,8 +80,9 @@ entity devices {
   --
   # device_type_id: INTEGER (FK)
   # house_id: UUID (FK)
-  name: String
-  serial_number: String
+  * name: String
+  * status: Boolean
+  * serial_number: String
   created_dt: DateTime
   updated_dt: DateTime
 }
@@ -89,7 +90,7 @@ entity devices {
 entity device_types {
   + id: INTEGER (PK)
   --
-  name: String
+  * name: String
   description: String
 }
 
@@ -98,8 +99,7 @@ entity telemetry_data {
   --
   # house_id: UUID (FK)
   # device_id: UUID (FK)
-  status: String
-  data: String
+  * data: Integer
   created_dt: DateTime
 }
 
@@ -109,8 +109,8 @@ entity scenarios {
   # user_id: UUID (FK)
   # module_id: UUID (FK)
   # device_id: UUID (FK)
-  name: String
-  config: String
+  * name: String
+  * config: String
   created_dt: DateTime
   updated_dt: DateTime
 }
@@ -119,7 +119,7 @@ users ||--o{ user_roles
 roles ||--o{ user_roles
 roles ||--o{ role_permissions
 permissions ||--o{ role_permissions
-users ||--o{ houses
+users }o--o{ houses
 module_types ||--o{ modules
 modules ||--|| houses
 device_types ||--o{ devices
