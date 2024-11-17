@@ -81,7 +81,7 @@ entity devices {
   # device_type_id: INTEGER (FK)
   # house_id: UUID (FK)
   * name: String
-  * status: Boolean
+  * status: String
   * serial_number: String
   created_dt: DateTime
   updated_dt: DateTime
