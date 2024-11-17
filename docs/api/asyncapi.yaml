@@ -47,7 +47,7 @@ channels:
     parameters:
       houseId:
         $ref: '#/components/parameters/houseId'
-  HouseLightTurnOn:
+  houseLightTurnOn:
     address: smarthouse.house_lights.1.0.action.{deviceId}.turn.on
     messages:
       turnOn:
@@ -55,11 +55,35 @@ channels:
     parameters:
       deviceId:
         $ref: '#/components/parameters/deviceId'
-  lightTurnOff:
+  houseLightTurnOff:
     address: smarthouse.house_lights.1.0.action.{deviceId}.turn.off
     messages:
       turnOff:
         $ref: '#/components/messages/turnOnOff'
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+  houseHeatingTurnOn:
+    address: smarthouse.house_heating.1.0.action.{deviceId}.turn.on
+    messages:
+      turnOn:
+        $ref: '#/components/messages/turnOnOff'
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+  houseHeatingTurnOff:
+    address: smarthouse.house_heating.1.0.action.{deviceId}.turn.off
+    messages:
+      turnOff:
+        $ref: '#/components/messages/turnOnOff'
+    parameters:
+      deviceId:
+        $ref: '#/components/parameters/deviceId'
+  houseHeatingSetTemperature:
+    address: smarthouse.house_heating.1.0.action.{deviceId}.set.temperature
+    messages:
+      setTemperature:
+        $ref: '#/components/messages/setTemperature'
     parameters:
       deviceId:
         $ref: '#/components/parameters/deviceId'
@@ -74,22 +98,46 @@ operations:
       - $ref: '#/components/operationTraits/kafka'
     messages:
       - $ref: '#/channels/devicesTelemetry/messages/deviceTelemetry'
-  turnOn:
+  houseLightTurnOn:
     action: send
     channel:
-      $ref: '#/channels/HouseLightTurnOn'
+      $ref: '#/channels/houseLightTurnOn'
     traits:
       - $ref: '#/components/operationTraits/kafka'
     messages:
-      - $ref: '#/channels/HouseLightTurnOn/messages/turnOn'
-  turnOff:
+      - $ref: '#/channels/houseLightTurnOn/messages/turnOn'
+  houseLightturnOff:
     action: send
     channel:
-      $ref: '#/channels/lightTurnOff'
+      $ref: '#/channels/houseLightTurnOff'
     traits:
       - $ref: '#/components/operationTraits/kafka'
     messages:
-      - $ref: '#/channels/lightTurnOff/messages/turnOff'
+      - $ref: '#/channels/houseLightTurnOff/messages/turnOff'
+  houseHeatingTurnOn:
+    action: send
+    channel:
+      $ref: '#/channels/houseHeatingTurnOn'
+    traits:
+      - $ref: '#/components/operationTraits/kafka'
+    messages:
+      - $ref: '#/channels/houseHeatingTurnOn/messages/turnOn'
+  houseHeatingTurnOff:
+    action: send
+    channel:
+      $ref: '#/channels/houseHeatingTurnOff'
+    traits:
+      - $ref: '#/components/operationTraits/kafka'
+    messages:
+      - $ref: '#/channels/houseHeatingTurnOff/messages/turnOff'
+  houseHeatingSetTemperature:
+    action: send
+    channel:
+      $ref: '#/channels/houseHeatingSetTemperature'
+    traits:
+      - $ref: '#/components/operationTraits/kafka'
+    messages:
+      - $ref: '#/channels/houseHeatingSetTemperature/messages/setTemperature'
 components:
   messages:
     deviceTelemetry:
@@ -102,6 +150,16 @@ components:
         - $ref: '#/components/messageTraits/commonHeaders'
       payload:
         $ref: '#/components/schemas/deviceTelemetryPayload'
+    setTemperature:
+      name: setTemperature
+      title: Установить температуру в доме
+      summary: >-
+        Установить температуру в доме.
+      contentType: application/json
+      traits:
+        - $ref: '#/components/messageTraits/commonHeaders'
+      payload:
+        $ref: '#/components/schemas/setTemperaturePayload'
     turnOnOff:
       name: turnOnOff
       title: Turn on/off
@@ -117,9 +175,20 @@ components:
         device_id:
           type: string
           description: ID устройства
-        telemetry_data:
-          type: string
+        data:
+          type: integer
           description: Данные телеметрии устройства.
+        sentAt:
+          $ref: '#/components/schemas/sentAt'
+    setTemperaturePayload:
+      type: object
+      properties:
+        device_id:
+          type: string
+          description: ID устройства
+        temperature:
+          type: integer
+          description: Температура в доме.
         sentAt:
           $ref: '#/components/schemas/sentAt'
     turnOnOffPayload:
@@ -130,7 +199,7 @@ components:
           enum:
             - 'on'
             - 'off'
-          description: Whether to turn on or off the light.
+          description: Команда Включить/выключить.
         sentAt:
           $ref: '#/components/schemas/sentAt'
     sentAt:

@@ -69,12 +69,9 @@ components:
           type: string
           format: uuid
           example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
-        status:
-          type: string
-          example: enabled
         data:
-          type: string
-          example: Example data
+          type: integer
+          example: 10
     TelemetryList:
       type: object
       properties:
