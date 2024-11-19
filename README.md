@@ -148,8 +148,8 @@
 - **API Gateway** направляет запросы к **Scenario Service** на просмотр/создание сценария работы устроиства.
 - **Scenario Service** направляет запросы к **ScenarioDatabase** на получение/создание сценария работы устроиства.
 
-- **Telemetry Management Service** подписан на события **Kafka** на получение событий по изменению состояний устроиств.
-- **Device Management Service** отправляет события **Kafka** на передачу команды на устройство.
+- **API Gateway** направляет запросы к **Telemetry Management Service** на чтение/запись телеметрии устройств.
+- **Device Management Service**  направляет запросы к **Устройствам** на выполнение команд.
 
 
 ## Визуализация архитектуры
@@ -182,8 +182,6 @@
 [Telemetry Service API](docs/api/TelemetryServiceApi.yml)
 
 [Devices Management Service API](docs/api/DeviceManagementServiceApi.yml)
-
-[Async API](docs/api/asyncapi.yaml)
 
 
 # Базовая настройка

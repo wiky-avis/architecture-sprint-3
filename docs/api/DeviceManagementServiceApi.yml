@@ -12,8 +12,6 @@ tags:
     description: Модули устройств
   - name: houses
     description: Дома где установлены устройства
-  - name: scenario
-    description: Отправка команд на устройства
 paths:
   /houses:
     post:
@@ -309,27 +307,6 @@ paths:
                 $ref: '#/components/schemas/ModulesList'
         '500':
           description: Ошибка сервера
-  /scenario/{id}/activate:
-    post:
-      tags:
-        - scenario
-      summary: Активировать сценарий работы устройства
-      description: 'Отправляет ивенты с командами в Kafka'
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Успешная операция
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScenarioActivate'
-        '500':
-          description: Ошибка сервера
 
 components:
   schemas:
@@ -498,7 +475,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Module'
-    ScenarioActivate:
+    DefaultApiResponse:
       type: object
       properties:
         result:

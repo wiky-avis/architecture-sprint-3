@@ -22,7 +22,6 @@ Container_Boundary(SmartHomeSystem, "Smart Home System") {
   ContainerDb(UsersDatabase, "Users DB", "PostgreSQL", "Данные о пользователях, ролях и разрешениях")
   Container(ScenarioService, "Scenario Service", "Java/Python/Go", "Сервис сценариев работы устройств")
   ContainerDb(ScenarioDatabase, "Scenario DB", "PostgreSQL", "Хранит сценарии работы устройств")
-  SystemQueue(kafka, "Kafka", "Система обмена сообщениями")
 }
 
 System_Boundary(devices, "Устройства") {
@@ -44,13 +43,16 @@ Rel(ScenarioService, ScenarioDatabase,"Чтение/запись данных с
 
 Rel(ApiGateway,DeviceManagementService, "Управление устройствами. Получение данных устройства.", "Запросы API", "HTTPS/JSON")
 Rel(ApiGateway,UsersService, "Авторизация и управление пользователями", "Запросы API", "HTTPS/JSON")
-Rel(HeatingDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд", "Events")
-Rel(VideoSurveillanceDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд", "Events")
-Rel(LightingDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд", "Events")
-Rel(GateDevice,kafka, "Отправка событий об изменении состояния устройства;n/Подписка на событие выполнения команд", "Events")
-Rel(DeviceManagementService,kafka, "Отправка событий выполнения команд", "Events")
-Rel(TelemetryManagementService,kafka, "Подписка на события изменения сотояния устройства", "Events")
+Rel(HeatingDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(VideoSurveillanceDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(LightingDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(GateDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,HeatingDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,VideoSurveillanceDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,LightingDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,GateDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
 Rel(ApiGateway,ScenarioService, "Получение/создание сценария работы устройства", "Запросы API", "HTTPS/JSON")
 Rel(ApiGateway,TelemetryManagementService, "Аналитика телеметрии устройств", "Запросы API", "HTTPS/JSON")
+Rel(ApiGateway,TelemetryManagementService, "Получение телеметрии устройства", "Запросы API", "HTTPS/JSON")
 
 @enduml

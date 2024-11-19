@@ -22,9 +22,9 @@ Rel(user, WebApp, "Управляет устройствами в своем д�
 Rel(admin,WebApp,"Администрирует систему Smart Home")
 Rel(MobileApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
 Rel(WebApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
-Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой", "Events")
-Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением", "Events")
-Rel(SmartHomeSystem,LightingDevice,"Управляет освещением", "Events")
-Rel(SmartHomeSystem,GateDevice,"Управляет воротами", "Events")
+Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,LightingDevice,"Управляет освещением", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,GateDevice,"Управляет воротами", "Запросы API", "HTTPS/JSON")
 
 @enduml

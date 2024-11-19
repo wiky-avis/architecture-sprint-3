@@ -8,21 +8,19 @@ top to bottom direction
 Container_Boundary(TelemetryManagementService, "Сервис управления телеметрией") {
   Container(App, "Application", "Java/Python/Go", "Сбор, анализ и хранение телеметрии с устройств")
   Container(Database, "Database", "PostgreSQL", "Телеметрия с устройств")
-  Container(Kafka, "Kafka", "Kafka", "Система обмена сообщениями")
 }
+System_Ext(devices, "Устройства", "Устройства установленные в доме")
 
 Container(App, "Application", "Java, Spring") {
   Component(TelemetryController, "TelemetryController", "Обрабатывает запросы на получение данных телеметрии устройств")
-  Component(TelemetryConsumer, "TelemetryConsumer", "Обрабатывает события на изменения состояния устройств")
   Component(ServiceLayer, "Telemetry Service Layer", "Слой бизнес-логики")
   Component(RepositoryLayer, "Telemetry Repository Layer", "Слой взаимодействия с БД")
 }
 
 Rel(TelemetryController,ServiceLayer,"Вызывает бизнес-логику")
+Rel(TelemetryController,devices,"Получение телеметрии")
 Rel(ServiceLayer,RepositoryLayer,"чтение/запись данных телеметрии")
 Rel(RepositoryLayer,Database,"чтение данных телеметрии")
-Rel(TelemetryConsumer,Kafka,"слушает события изменения состояния устройств")
-Rel(TelemetryConsumer,ServiceLayer,"запись данных телеметрии")
 Rel(ServiceLayer,RepositoryLayer,"запись данных телеметрии")
 Rel(RepositoryLayer,Database,"запись данных телеметрии")
 @enduml
