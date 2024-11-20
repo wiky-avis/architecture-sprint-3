@@ -9,7 +9,7 @@ tags:
   - name: devices
     description: Телеметрия устройств
 paths:
-  /devices/{id}/telemtry:
+  /devices/{id}/telemetry:
     get:
       tags:
         - devices
@@ -30,7 +30,36 @@ paths:
                 $ref: '#/components/schemas/Telemetry'
         '500':
           description: Ошибка сервера
-  /houses/{id}/telemtry:
+    post:
+      tags:
+        - devices
+      summary: Записать данные устройства по его id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceTelemetryInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Telemetry'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Устройство не найдено
+        '500':
+          description: Ошибка сервера
+  /houses/{id}/telemetry:
     get:
       tags:
         - devices
@@ -69,6 +98,12 @@ components:
           type: string
           format: uuid
           example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        data:
+          type: integer
+          example: 10
+    DeviceTelemetryInput:
+      type: object
+      properties:
         data:
           type: integer
           example: 10

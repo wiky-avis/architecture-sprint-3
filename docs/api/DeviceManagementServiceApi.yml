@@ -145,6 +145,65 @@ paths:
           description: Устройство не найдено
         '500':
           description: Ошибка сервера
+    put:
+      tags:
+        - devices
+      summary: Обновить данные устройства
+      description: Создание устройства.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdateInput'
+      responses:
+        '201':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Устройство не найдено
+        '500':
+          description: Ошибка сервера
+  /devices/{id}/command:
+    post:
+      tags:
+        - devices
+      summary: Отправить команду на устройство
+      description: Отправить команду на устройство
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCommandInput'
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultApiResponse'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Устройство не найдено
+        '500':
+          description: Ошибка сервера
   /device_types/{id}:
     get:
       tags:
@@ -351,6 +410,32 @@ components:
         serial_number:
           type: string
           example: A90X-U234PQR500
+    DeviceCommandInput:
+      type: object
+      properties:
+        command_code:
+          type: string
+          example: GATE_1_1
+    DeviceUpdateInput:
+      type: object
+      properties:
+        device_type_id:
+          type: integer
+          format: int64
+          example: 10
+        house_id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0757
+        name:
+          type: string
+          example: Device name
+        serial_number:
+          type: string
+          example: A90X-U234PQR500
+        status:
+          type: string
+          example: 'enabled'
     Device:
       type: object
       properties:
@@ -493,4 +578,3 @@ components:
           type: string
       xml:
         name: '##default'
-

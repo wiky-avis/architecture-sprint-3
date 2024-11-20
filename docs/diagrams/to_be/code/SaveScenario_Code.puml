@@ -1,7 +1,7 @@
 @startuml
 autonumber
 
-title [Sequence]: Процесс создания и отправка команд на устройства устройства
+title [Sequence]: Процесс создания сценария и отправка команд на устройства устройства
 
 actor "User" as user
 participant client as "web/mobile client"
