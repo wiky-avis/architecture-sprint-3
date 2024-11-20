@@ -126,7 +126,6 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Update an existent user in the store
         content:
           application/json:
             schema:
@@ -302,7 +301,7 @@ paths:
         '400':
           description: Неверный запрос
         '404':
-          description: Пользователь/роль не найдены
+          description: Роль не найдена
         '500':
           description: Ошибка сервера
   /roles/{role_id}/permissions/{permission_id}:
@@ -449,7 +448,7 @@ components:
           example: ROLE_PORTAL_USER
         permissions:
           type: array
-          example: [{id: 1, name: "ROLE_PORTAL_USER"}, {id: 2, name: "OTHER_ROLE_USER"}]
+          example: [{id: 1, name: "VIEWING_PROFILE"}, {id: 2, name: "OTHER_PERMISSIONS"}]
       xml:
         name: roles
     UserRoleInput:
