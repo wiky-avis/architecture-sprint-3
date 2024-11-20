@@ -1,0 +1,557 @@
+openapi: 3.0.3
+info:
+  title: Users Service API - OpenAPI 3.0
+  description: API сервиса управления данными о пользователях.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: users
+    description: Управление пользователями
+  - name: roles
+    description: Управление ролями
+  - name: permissions
+    description: Управление разрешениями
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Создание пользователя
+      description: Создание пользователя.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /users/login:
+    get:
+      tags:
+        - users
+      summary: Залогиниться
+      description: ''
+      parameters:
+        - name: user_name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '400':
+          description: Введенные неверные имя пользователя/пароль
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Ошибка сервера
+  /users/logout:
+    get:
+      tags:
+        - users
+      summary: Разлогиниться
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: Успешная операция
+        '500':
+          description: Ошибка сервера
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Получить данные пользователя по id
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Ошибка сервера
+    put:
+      tags:
+        - users
+      summary: Обновить данные пользователя
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Ошибка сервера
+    delete:
+      tags:
+        - users
+      summary: Удалить пользователя
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '203':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Ошибка сервера
+  /users/{id}/roles:
+    put:
+      tags:
+        - users
+      summary: Назначить пользователю роль
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleInput'
+      responses:
+        '200':
+          description: Роль успешно назвачена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Пользователь/роль не найдены
+        '500':
+          description: Ошибка сервера
+  /users/{user_id}/roles/{role_id}:
+    delete:
+      tags:
+        - users
+      summary: Удалить роль у пользователя
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: role_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '203':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Пользователь/роль не найдены
+        '500':
+          description: Ошибка сервера
+  /roles:
+    post:
+      tags:
+        - roles
+      summary: Создание роли
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleInput'
+      responses:
+        '201':
+          description: Роль создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /roles/{id}:
+    delete:
+      tags:
+        - roles
+      summary: Удалить роль
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '203':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Роль не найдена
+        '500':
+          description: Ошибка сервера
+  /roles/{id}/permissions:
+    put:
+      tags:
+        - roles
+      summary: Назначить разрешения роли
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolePermissionInput'
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolePermission'
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Роль не найдена
+        '500':
+          description: Ошибка сервера
+  /roles/{role_id}/permissions/{permission_id}:
+    delete:
+      tags:
+        - roles
+      summary: Удалить разрешение для роли
+      parameters:
+        - name: role_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: permission_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '203':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Разрешение/роль не найдены
+        '500':
+          description: Ошибка сервера
+  /permissions:
+    post:
+      tags:
+        - permissions
+      summary: Создание разрешения
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionInput'
+      responses:
+        '201':
+          description: Разрешение создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
+  /permissions/{id}:
+    delete:
+      tags:
+        - permissions
+      summary: Удалить разрешение
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '203':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: "Ok"
+        '404':
+          description: Роль не найдена
+        '500':
+          description: Ошибка сервера
+components:
+  schemas:
+    UserInput:
+      type: object
+      properties:
+        user_name:
+          type: string
+          example: theUser
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+      xml:
+        name: users
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ad2f3b49-9a48-4597-82d9-2c20fe1e0755
+        user_name:
+          type: string
+          example: theUser
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+        roles:
+          type: array
+          example: ["ROLE_PORTAL_USER", "OTHER_ROLE_USER"]
+      xml:
+        name: users
+    RolePermission:
+      type: object
+      properties:
+        role_id:
+          type: integer
+          example: 1
+        role_name:
+          type: string
+          example: ROLE_PORTAL_USER
+        permissions:
+          type: array
+          example: [{id: 1, name: "VIEWING_PROFILE"}, {id: 2, name: "OTHER_PERMISSIONS"}]
+      xml:
+        name: roles
+    UserRoleInput:
+      type: object
+      properties:
+        role_id:
+          type: integer
+          format: int64
+          example: 10
+      xml:
+        name: users
+    RolePermissionInput:
+      type: object
+      properties:
+        permission_id:
+          type: integer
+          format: int64
+          example: 10
+      xml:
+        name: roles
+    RoleInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: ROLE_PORTAL_USER
+        description:
+          type: string
+          example: Описание роли
+      xml:
+        name: roles
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: ROLE_PORTAL_USER
+        description:
+          type: string
+          example: Описание роли
+      xml:
+        name: roles
+    PermissionInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: VIEWING_PROFILE
+        description:
+          type: string
+          example: Описание разрешения
+      xml:
+        name: permissions
+    Permission:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: VIEWING_PROFILE
+        description:
+          type: string
+          example: Описание разрешения
+      xml:
+        name: permissions
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    UserArray:
+      description: Список пользовательских объектов
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:8080/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

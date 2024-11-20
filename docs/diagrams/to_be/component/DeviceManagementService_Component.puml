@@ -1,0 +1,24 @@
+@startuml
+title Device Management Service Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(DeviceManagementService, "Сервис управления устройствами") {
+  Container(App, "Application", "Java/Python/Go", "Хранит данные об устройствах, \nотправляет команды на устройства")
+  Container(Database, "Database", "PostgreSQL", "данные об устройствах")
+}
+System_Ext(devices, "Устройства", "Устройства установленные в доме")
+
+Container(App, "Application", "Java, Spring") {
+  Component(DevicesController, "DevicesController", "Обрабатывает запросы на получение данных телеметрии устройств")
+  Component(ServiceLayer, "Devices Service Layer", "Слой бизнес-логики")
+  Component(RepositoryLayer, "Devices Repository Layer", "Слой взаимодействия с БД")
+}
+
+Rel(DevicesController,ServiceLayer,"Вызывает бизнес-логику")
+Rel(ServiceLayer,RepositoryLayer,"чтение/запись данных устройств")
+Rel(RepositoryLayer,Database,"чтение/запись данных устройств")
+Rel(ServiceLayer,devices,"отправка команд устройствам")
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+title Smart Home Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы Smart Home")
+Person(admin, "Administrator", "Администратор системы Smart Home")
+System(SmartHomeSystem, "Smart Home System", "Система управления умным домом")
+
+System_Ext(WebApp, "Web Application", "Предоставляет пользователям интерфейс для управления умным домов через веб-браузер")
+System_Ext(MobileApp, "Mobile Application", "Предоставляет пользователям интерфейс для управления умным домов через мобильное приложение")
+
+Container_Boundary(SmartHomeSystem, "Smart Home System") {
+  Container(ApiGateway, "API Gateway", "Аутентификация/Балансировака/Маршрутизация")
+  Container(TelemetryManagementService, "Telemetry Management Service", "Java/Python/Go", "Сервис управления телеметрией")
+  ContainerDb(TelemetryDatabase, "Telemetry DB", "PostgreSQL", "Телеметрия с устройств")
+  Container(DeviceManagementService, "Device Management Service", "Java/Python/Go", "Сервис управления устройствами")
+  ContainerDb(DevicesDatabase, "Devices DB", "PostgreSQL", "Данные об устройствах")
+  Container(UsersService, "Users Service", "Java/Python/Go", "Сервис управления пользователями")
+  ContainerDb(UsersDatabase, "Users DB", "PostgreSQL", "Данные о пользователях, ролях и разрешениях")
+  Container(ScenarioService, "Scenario Service", "Java/Python/Go", "Сервис сценариев работы устройств")
+  ContainerDb(ScenarioDatabase, "Scenario DB", "PostgreSQL", "Хранит сценарии работы устройств")
+}
+
+System_Boundary(devices, "Устройства") {
+    System_Ext(HeatingDevice, "Heating Device", "Устройство управления отоплением")
+    System_Ext(VideoSurveillanceDevice, "Video Surveillance Device", "Устройство управления видеонаблюдением")
+    System_Ext(LightingDevice, "Lighting Device", "Устройство управления освещением")
+    System_Ext(GateDevice, "Gate Device", "Устройство управления воротами")
+}
+
+Rel(user, WebApp, "Управляет устройствами в своем доме")
+Rel(user, MobileApp, "Управляет устройствами в своем доме")
+Rel(admin, WebApp,"Администрирует систему Smart Home")
+Rel(WebApp, ApiGateway,"Управляет устройствами в своем доме", "Запросы API", "HTTPS/JSON")
+Rel(MobileApp, ApiGateway,"Управляет устройствами в своем доме", "Запросы API", "HTTPS/JSON")
+Rel(TelemetryManagementService, TelemetryDatabase,"Чтение/запись телеметрии устройств", "TCP/IP")
+Rel(DeviceManagementService, DevicesDatabase,"Чтение/запись данных об устройстве", "TCP/IP")
+Rel(UsersService, UsersDatabase,"Чтение/запись данных о пользователе, ролях и разрешениях пользователя", "TCP/IP")
+Rel(ScenarioService, ScenarioDatabase,"Чтение/запись данных сценария работы устройства", "TCP/IP")
+
+Rel(ApiGateway,DeviceManagementService, "Управление устройствами. Получение данных устройства.", "Запросы API", "HTTPS/JSON")
+Rel(ApiGateway,UsersService, "Авторизация и управление пользователями", "Запросы API", "HTTPS/JSON")
+Rel(HeatingDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(VideoSurveillanceDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(LightingDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(GateDevice,ApiGateway, "Передает телеметрию", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,HeatingDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,VideoSurveillanceDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,LightingDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(DeviceManagementService,GateDevice, "Отправка выполнения команд", "Запросы API", "HTTPS/JSON")
+Rel(ApiGateway,ScenarioService, "Получение/создание сценария работы устройства", "Запросы API", "HTTPS/JSON")
+Rel(ApiGateway,TelemetryManagementService, "Аналитика телеметрии устройств", "Запросы API", "HTTPS/JSON")
+Rel(ApiGateway,TelemetryManagementService, "Получение телеметрии устройства", "Запросы API", "HTTPS/JSON")
+
+@enduml

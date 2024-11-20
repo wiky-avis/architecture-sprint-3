@@ -1,0 +1,56 @@
+@startuml
+autonumber
+
+title [Sequence]: Процесс создания сценария и отправка команд на устройства устройства
+
+actor "User" as user
+participant client as "web/mobile client"
+box "Scenario Service"
+    participant ScenarioServiceController as "Scenario Controller"
+    participant ScenarioServiceLayer as "Scenario Service Layer"
+    participant ScenarioRepositoryLayer as "Scenariot Repository Layer"
+    database ScenarioDB as "scenario_db" #0080ff
+endbox
+
+box "Device Management Service"
+    participant DeviceManagementController as "Device Management Controller"
+    participant ServiceLayer as "Device Management Service Layer"
+    participant RepositoryLayer as "Device Management Repository Layer"
+    database DB as "devices_db" #0080ff
+endbox
+
+participant "Устройства" as devices
+
+user -> client: пользователь создал сценарий для устройства
+client -> ScenarioServiceController: Создай сценарий для устройства
+ScenarioServiceController -> ScenarioServiceLayer: Создай сценарий для устройства
+ScenarioServiceLayer -> DeviceManagementController: запрос данных об устройстве
+DeviceManagementController -> ServiceLayer: запрос данных об устройстве
+ServiceLayer -> RepositoryLayer: запрос данных об устройстве
+RepositoryLayer -> DB: запрос данных об устройстве
+DB --> RepositoryLayer: return Данные об устройстве
+RepositoryLayer --> ServiceLayer: return Данные об устройстве
+ServiceLayer --> DeviceManagementController: return Данные об устройстве
+DeviceManagementController --> ScenarioServiceLayer: return Данные об устройстве
+ScenarioServiceLayer -> ScenarioRepositoryLayer: сохранение сценария
+ScenarioRepositoryLayer -> ScenarioDB: сохранение сценария
+ScenarioDB --> ScenarioRepositoryLayer: return Ok
+ScenarioRepositoryLayer --> ScenarioServiceLayer: return Ok
+ScenarioServiceLayer --> ScenarioServiceController: return Ok
+ScenarioServiceController --> client: return Ok
+client --> user: return Ok
+
+user -> client: отправить команду на устройство
+client -> DeviceManagementController: отправить команду на устройство
+DeviceManagementController -> ServiceLayer: отправить команду на устройство
+ServiceLayer -> ScenarioServiceController: запрос данных сценария
+ScenarioServiceController -> ScenarioServiceLayer: запрос данных сценария
+ScenarioServiceLayer -> ScenarioRepositoryLayer: запрос данных сценария
+ScenarioRepositoryLayer -> ScenarioDB: запрос данных сценария
+ScenarioRepositoryLayer <-- ScenarioDB: return
+ScenarioServiceLayer <-- ScenarioRepositoryLayer: return
+ScenarioServiceController <-- ScenarioServiceLayer: return
+ServiceLayer <-- ScenarioServiceController: return Данные сценария
+ServiceLayer -> devices: отправка команд устройствам
+
+@enduml

@@ -1,0 +1,132 @@
+@startuml
+entity users {
+  + id: UUID (PK)
+  --
+  * user_name: String
+  * first_name: String
+  * last_name: String
+  * phone: String
+  * email: String
+  * password: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity roles {
+  + id: INTEGER (PK)
+  --
+  * name: String
+  description: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity user_roles {
+  + id: INTEGER (PK)
+  --
+  # user_id: UUID (FK)
+  # role_id: INTEGER (FK)
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity permissions {
+  + id: INTEGER (PK)
+  --
+  * name: String
+  description: String
+}
+
+entity role_permissions {
+  + id: INTEGER (PK)
+  --
+  # role_id: INTEGER (FK)
+  # permission_id: INTEGER (FK)
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity houses {
+  + id: UUID (PK)
+  --
+  # user_id: UUID (FK)
+  * address: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity modules {
+  + id: UUID (PK)
+  --
+  # module_type_id: INTEGER (FK)
+  # house_id: UUID (FK)
+  # device_id: UUID (FK)
+  # scenario_id: UUID (FK)
+  * name: String
+  * serial_number: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity module_types {
+  + id: INTEGER (PK)
+  --
+  * name: String
+  description: String
+}
+
+entity devices {
+  + id: UUID (PK)
+  --
+  # device_type_id: INTEGER (FK)
+  # house_id: UUID (FK)
+  * name: String
+  * status: String
+  * serial_number: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+entity device_types {
+  + id: INTEGER (PK)
+  --
+  * name: String
+  description: String
+}
+
+entity telemetry_data {
+  + Id: UUID (PK)
+  --
+  # house_id: UUID (FK)
+  # device_id: UUID (FK)
+  * data: Integer
+  created_dt: DateTime
+}
+
+entity scenarios {
+  + id: UUID (PK)
+  --
+  # user_id: UUID (FK)
+  # module_id: UUID (FK)
+  # device_id: UUID (FK)
+  * name: String
+  * config: String
+  created_dt: DateTime
+  updated_dt: DateTime
+}
+
+users ||--o{ user_roles
+roles ||--o{ user_roles
+roles ||--o{ role_permissions
+permissions ||--o{ role_permissions
+users }o--o{ houses
+module_types ||--o{ modules
+modules ||--|| houses
+device_types ||--o{ devices
+devices ||--|| modules
+devices ||--|| houses
+telemetry_data ||--o{ modules
+telemetry_data ||--o{ houses
+modules ||--|| scenarios
+
+@enduml

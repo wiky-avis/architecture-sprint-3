@@ -1,0 +1,22 @@
+@startuml
+title Scenario Service Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(ScenarioService, "Сервис сценариев работы устройств") {
+  Container(App, "Application", "Java/Python/Go", "Хранит сценарии работы устройств")
+  Container(Database, "Database", "PostgreSQL", "сценарии работы устройств")
+}
+
+Container(App, "Application", "Java, Spring") {
+  Component(ScenarioController, "ScenarioController", "Обрабатывает запросы на получение данных телеметрии устройств")
+  Component(ServiceLayer, "Scenario Service Layer", "Слой бизнес-логики")
+  Component(RepositoryLayer, "Scenario Repository Layer", "Слой взаимодействия с БД")
+}
+
+Rel(ScenarioController,ServiceLayer,"Вызывает бизнес-логику")
+Rel(ServiceLayer,RepositoryLayer,"получение/создание сценария устройства")
+Rel(RepositoryLayer,Database,"получение/создание сценария устройства")
+@enduml

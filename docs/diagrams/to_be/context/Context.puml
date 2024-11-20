@@ -1,0 +1,30 @@
+@startuml
+title Smart Home Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы Smart Home")
+Person(admin, "Administrator", "Администратор системы Smart Home")
+System(SmartHomeSystem, "Smart Home System", "Система управления умным домом")
+
+System_Ext(HeatingDevice, "Heating Device", "Устройство управления отоплением")
+System_Ext(VideoSurveillanceDevice, "Video Surveillance Device", "Устройство управления видеонаблюдением")
+System_Ext(LightingDevice, "Lighting Device", "Устройство управления освещением")
+System_Ext(GateDevice, "Gate Device", "Устройство управления воротами")
+
+System_Ext(WebApp, "Web Application", "Предоставляет пользователям интерфейс для управления умным домов через веб-браузер")
+System_Ext(MobileApp, "Mobile Application", "Предоставляет пользователям интерфейс для управления умным домов через мобильное приложение")
+
+Rel(user, MobileApp, "Управляет устройствами в своем доме")
+Rel(user, WebApp, "Управляет устройствами в своем доме")
+Rel(admin,WebApp,"Администрирует систему Smart Home")
+Rel(MobileApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
+Rel(WebApp, SmartHomeSystem, "Управляет устройствами в своем доме. \n", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,HeatingDevice,"Управляет отопительной системой", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,VideoSurveillanceDevice,"Управляет видеонаблюдением", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,LightingDevice,"Управляет освещением", "Запросы API", "HTTPS/JSON")
+Rel(SmartHomeSystem,GateDevice,"Управляет воротами", "Запросы API", "HTTPS/JSON")
+
+@enduml
